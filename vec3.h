@@ -1,9 +1,7 @@
 #include <math.h>
-#include <stdlib.h>
-#include <iostream.h>
 
-#ifndef VEC3.H
-#define VEC3.H
+#ifndef VEC3_H
+#define VEC3_H
 
 
 class vec3 {
@@ -14,21 +12,21 @@ public:
     vec3() : e{0, 0, 0}{} 
 
     vec3(double x, double y, double z)
-    {x = x; y = y; z = z;}
+    {e[0] = x; e[1] = y; e[2] = z;}
     
     double x() const { return e[0]; }
     
     double y() const { return e[1]; }
     
-    double z() const { return [2]; }
+    double z() const { return e[2]; }
 
     //const vec& operator+() const { return *this; } 
-    vec operator-() const { 
-	return vec(-x, -y, -z); 
+    vec3 operator-() const { 
+	return vec3(-e[0], -e[1], -e[2]); 
 	}
     
     double operator[](int i) const {
-	return e[i]
+	return e[i];
 	}
 
     double operator[](int i) {
@@ -51,29 +49,30 @@ public:
 	return *this;
 	}
 
-    vec& operator/=(double t){
+    vec3& operator/=(double t){
 	//already using operator above wow
 	return *this *= 1/t;
 	}
 
-    double length() const{
-	return std::sqrt(length_squared());
-	}	
-
-    double length_squared(){
+    double length_squared() const{
 	return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
 	}
 
+    double length() const{
+	double len = sqrt(length_squared());
+	return len;
+	}	
+
     bool near_zero() const{
 	double n = 1e-8;
-	return (std::fabs(e[0] < n) && (std::fabs(e[1] < n) && (std::fabs(e[2] < n)
+	return (std::fabs(e[0] < n)) && (std::fabs(e[1] < n)) && (std::fabs(e[2] < n));
 	}
     	
     static vec3 random(){
 	return vec3(random_double(), random_double(), random_double());
 	}		
 
-    static vec3 random(low, high){
+    static vec3 random(double low, double high){
 	return vec3(random_double(low, high), random_double(low, high), random_double(low, high));
 	}
 };
@@ -115,10 +114,11 @@ inline vec3 cross(const vec3 &u, const vec3 &v){
 }
 
 inline vec3 unit(const vec3 &u){
-    return u / u.length;
+    double len = u.length();
+    return u/len;
 }
 
-inline random_in_unit_disk() {
+inline vec3 random_in_unit_disk() {
     while (true) {
 	auto m = vec3(random_double(-1, 1), random_double(-1, 1), 0);
 	if (m.length_squared() < 1){
@@ -132,12 +132,12 @@ inline vec3 random_unit(){
 	auto m = vec3::random(-1, 1);
 	auto len_sq = m.length_squared();
 	if (1e-160 < len_sq && len_sq <= 1.0){
-	    return p / sqrt(len_sq);
+	    return m / sqrt(len_sq);
 	}
     }
 }
 
-inline vec3 random_on_hemisphere{
+inline vec3 random_on_hemisphere(const vec3 &normal){
 	vec3 on_unit_sphere = random_unit();
 	if (dot(on_unit_sphere, normal) > 0.0){
 	    return on_unit_sphere;
@@ -152,9 +152,9 @@ inline vec3 reflect(const vec3 &u, const vec3 &n){
 }
 inline vec3 refract(const vec3 &uv, const vec3 &n, double etai_over_etat){
     auto cos_theta = std::fmin(dot(-uv, n), 1.0);
-    vec3 r_tangent = etai_over_etat * (uv + cos_theta);
+    vec3 r_tangent = etai_over_etat * (uv + cos_theta*n);
     vec3 r_parallel = -std::sqrt(std::fabs(1.0 - r_tangent.length_squared()))*n;
-    return r_tangent + r_paralell;
+    return r_tangent + r_parallel;
 }
 
 #endif

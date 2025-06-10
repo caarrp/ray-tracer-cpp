@@ -1,23 +1,23 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include <iostream>
 #include "vec3.h"
  
 class ray
 {
-    vec3 a;
-    vec3 b;
+    vec3 orig;
+    vec3 dir;
 public:
 
     ray() {}
-    ray(const vec3 &a, const vec3 &b){
-	a = a;
-	b = b;
-	}
+    ray(const vec3 &a, const vec3 &b) : orig(a), dir(b) {}
 
-    vec3 origin() const { return a;}
-    vec3 direction() const { return b;}
+    vec3 origin() const { return orig;}
+    vec3 direction() const { return dir;}
 
-    vec3 param_pt(double t) const { return a + t*b;} 
-}
+    vec3 param_pt(double t) const { 
+	return orig + t*dir;
+	} 
+};
+
+#endif
