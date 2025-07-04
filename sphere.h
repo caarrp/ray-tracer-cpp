@@ -34,21 +34,26 @@ bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) cons
     //computing components of quadratic eq. to solve 
     //for any ray - sphere intersection
 
-    if (discriminant > 0){
-	//ray hits sphere
+    if (discriminant >= 0){
+	//ray hits sphere including tangent pts
 	
-	float temp = (-b - sqrt(b*b - a*c))/a;
+	double temp = (-b - sqrt(b*b - a*c))/a;
 	//temp finds the closer of the hit points (if 2)
 	if (temp < t_max && temp > t_min){
 	    //if its in range:
 	    //meaning its not too close to viewport
-	    //or too far away thus t_min, t_max
-	    rec.t = temp;
+	    //or too far away
+	    rec.t = temp; 
+	    //records the scalar dist. along the ray
 	    rec.p = r.param_pt(rec.t);
+	    //records the point in space where ray hits object
 	    rec.normal = (rec.p - center) / radius;
+	    //saves normal of ray to sphere
+
 	    return true;
 	    }
 	temp = (-b + sqrt(b*b - a*c))/a;
+	//checking the other hit point just in case
 	if (temp < t_max && temp > t_min){
 	    rec.t = temp;
 	    rec.p = r.param_pt(rec.t);
@@ -57,6 +62,7 @@ bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) cons
 	    }
 	}
     return false;
+    //no hits then its not recorded
 }
 
 #endif
