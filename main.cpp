@@ -34,10 +34,10 @@ int main(){
 
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    vec3 lower_left_corner(-2.0, -1.0, -1.0);
+    vec3 lower_left_corner(-2.0, -1.0, -2.0);
     vec3 horizontal(4.0, 0.0, 0.0);
     vec3 vertical(0.0, 2.0, 0.0);
-    vec3 origin(0.0, 0.0, 0.0);
+    vec3 origin(0.0, 1.0, 0.0);
 
     hitable *list[2];
     list[0] = new sphere(vec3(0, 0, -1.0), 0.5);
@@ -50,7 +50,7 @@ int main(){
 	    double u = double(i) / double(nx);
 	    double v = double(j) / double(ny);
 
-	    ray r(origin, lower_left_corner + u*horizontal + v*vertical);
+	    ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
 	    
 	    vec3 p = r.param_pt(2.0);
 	    vec3 col = color(r, world);

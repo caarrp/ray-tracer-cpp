@@ -41,8 +41,6 @@ bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) cons
 	//temp finds the closer of the hit points (if 2)
 	if (temp < t_max && temp > t_min){
 	    //if its in range:
-	    //meaning its not too close to viewport
-	    //or too far away
 	    rec.t = temp; 
 	    //records the scalar dist. along the ray
 	    rec.p = r.param_pt(rec.t);
