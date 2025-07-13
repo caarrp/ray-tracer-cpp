@@ -1,13 +1,13 @@
-#include "color"
+#include "color.h"
 #include "ray.h"
 #include "vec3.h"
 
 #include <iostream>
 
-color ray_color(const ray& r){
+vec3 ray_color(const ray& r){
     vec3 unit_direction = unit(r.direction());
     vec3 a = 0.5*(unit_direction.y() + 1.0);
-    return (1.0-a)*color(1.0,1.0,1.0) + a*color(0.5, 0.7, 1.0);
+    return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.5, 0.7, 1.0);
 }
 
 
@@ -16,7 +16,7 @@ int main() {
     double aspect_ratio = 16.0/9.0;
     int image_width = 400;
  
-    image_height = int( image_width / aspect_ratio);
+    int image_height = int( image_width / aspect_ratio);
 
     image_height = (image_height < 1) ? 1 : image_height;
     //if the image height is less than one make it one, otherwise keep as is
@@ -49,7 +49,7 @@ int main() {
 
 	    ray r(camera_center, ray_direction);
 
-	    color pixel_color = ray_color(r);
+	    vec3 pixel_color = ray_color(r);
 	    write_color(std::cout, pixel_color);
 	}
     }
