@@ -12,8 +12,7 @@ TARGET := $(BIN_DIR)/test
 
 #to get all cpp files
 SRCS := $(wildcard $(SRC_DIR)/*.cc)
-OBJS := $(patsubst $(SRC_DIR)%.cc, $(OBJ_DIR)/%.o, $(SRCS))
-
+OBJS := $(patsubst %.cc,$(OBJ_DIR)/%.o,$(notdir $(SRCS)))
 all := $(TARGET)
 
 #then to link to executable
