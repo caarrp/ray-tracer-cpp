@@ -11,8 +11,8 @@ BIN_DIR := bin
 TARGET := $(BIN_DIR)/test
 
 #to get all cpp files
-SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(patsubst $(SRC_DIR)%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+SRCS := $(wildcard $(SRC_DIR)/*.cc)
+OBJS := $(patsubst $(SRC_DIR)%.cc, $(OBJ_DIR)/%.o, $(SRCS))
 
 all := $(TARGET)
 
@@ -23,7 +23,7 @@ $(TARGET): $(OBJS)
 
 
 #compile cpp to o
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
