@@ -6,7 +6,7 @@
 
 vec3 ray_color(const ray& r){
     vec3 unit_direction = unit(r.direction());
-    double a = 0.5*(unit_direction.y() + 1.0);
+    vec3 a = 0.5*(unit_direction.y() + 1.0);
     return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.5, 0.7, 1.0);
 }
 
@@ -61,4 +61,4 @@ int main() {
 
 
 
-
+}
