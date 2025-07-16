@@ -23,7 +23,7 @@ double hit_sphere(const vec3 &center, double radius, const ray &r){
 
 vec3 ray_color(const ray& r, const hitable &world){
     hit_record rec;
-    if (world.hit(r, 0, infinity, rec)){
+    if (world.hit(r, interval(0, infinity), rec)){
 	return 0.5 * (rec.normal + vec3(1, 1, 1));
     }
     
@@ -31,7 +31,6 @@ vec3 ray_color(const ray& r, const hitable &world){
     double a = 0.5*(unit_direction.y() + 1.0);
     return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.7, 0.5, 1.0);
 }
-	
 
 
 

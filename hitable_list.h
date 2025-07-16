@@ -24,28 +24,24 @@ class hitable_list: public hitable {
 	    objects.push_back(object);
 	}
 
-	virtual bool hit(const ray &r, double t_min, double t_max, hit_record &rec) const;
+	virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const;
 	//overriding hit from hitable
 	
-	hitable **list;
-	//ptr to an array of ptrs of hitable objs
-	int list_size;
-	//way to index the size
 };
 
 
-bool hitable_list::hit(const ray &r, double t_min, double t_max, hit_record &rec) 
+bool hitable_list::hit(const ray &r, interval ray_t, hit_record &rec) 
     const {
 	
 	hit_record temp_rec;
 	//tmp to hold hit data from each obj
 	bool hit_anything = false;
 	// a hit/not hit flag
-	double closest_so_far = t_max;
+	double closest_so_far = ray_t.max;
 	
 	for (const auto &object : objects){
 	    //looping through all the objects in the list
-	    if (object->hit(r, t_min, closest_so_far, temp_rec)){
+	    if (object->hit(r, interval(ray_t.min, closest_so_far), temp_rec)){
 		//if it is hit, adjust variables
 		hit_anything = true;
 		closest_so_far = temp_rec.t;

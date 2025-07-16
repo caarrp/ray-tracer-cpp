@@ -12,7 +12,7 @@ class sphere: public hitable {
 	sphere(vec3 c, double r) : center(c), radius(r) {};
 	//parameterized constructor inits center and radius
 	
-	virtual bool hit(const ray &r, double t_min, double t_max, hit_record &rec) const;
+	virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const;
 	//declaring virtual function hit
 	
 	vec3 center;
@@ -22,45 +22,32 @@ class sphere: public hitable {
 //ends class declaration
 
 
-bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) const{
-    //hit checks if a ray intersects the sphere, if so 
-    //we record the hit details in rec
+bool sphere::hit(const ray &r, interval ray_t, hit_record &rec) const{
+        vec3 oc = center - r.origin();
+        auto a = r.direction().length_squared();
+        auto h = dot(r.direction(), oc);
+        auto c = oc.length_squared() - radius*radius;
 
-    vec3 oc = r.origin() - center;
-    double a = dot(r.direction(), r.direction());
-    double b = dot(oc, r.direction());
-    double c = dot(oc, oc) - radius*radius;
-    double discriminant = b*b - a*c;
-    //computing components of quadratic eq. to solve 
-    //for any ray - sphere intersection
+        auto discriminant = h*h - a*c;
+        if (discriminant < 0)
+            return false;
 
-    if (discriminant >= 0){
-	//ray hits sphere including tangent pts
-	
-	double temp = (-b - sqrt(b*b - a*c))/a;
-	//temp finds the closer of the hit points (if 2)
-	if (t_min > temp && temp < t_max){
-	    //if its in range:
-	    rec.t = temp; 
-	    //records the scalar dist. along the ray
-	    rec.p = r.param_pt(rec.t);
-	    //records the point in space where ray hits object
-	    rec.normal = (rec.p - center) / radius;
-	    //saves normal of ray to sphere
+        auto sqrtd = std::sqrt(discriminant);
 
-	    return true;
-	    }
-	temp = (-b + sqrt(b*b - a*c))/a;
-	//checking the other hit point just in case
-	if (t_min < temp && temp < t_max){
-	    rec.t = temp;
-	    rec.p = r.param_pt(rec.t);
-	    rec.normal = (rec.p - center) / radius; 
-	    return true;
-	    }
-	}
-    return false;
-    //no hits then its not recorded
+        // Find the nearest root that lies in the acceptable range.
+        auto root = (h - sqrtd) / a;
+        if (!ray_t.surrounds(root)) {
+            root = (h + sqrtd) / a;
+            if (!ray_t.surrounds(root))
+                return false;
+        }
+
+        rec.t = root;
+        rec.p = r.param_pt(rec.t);
+	vec3 outward_normal = (rec.p - center) / radius;
+        rec.set_face_n(r, outward_normal);
+
+        return true;
 }
 
 #endif
