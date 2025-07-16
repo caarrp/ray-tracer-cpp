@@ -74,11 +74,11 @@ private:
     ray get_ray(int i, int j) const{
         
 	auto offset = sample_square();
-        auto pixel_sample = pixel00_loc
-                          + ((i + offset.x()) * pixel_delta_u)
-                          + ((j + offset.y()) * pixel_delta_v);
+        auto pixel_sample = pixel_ul
+                          + ((i + offset.x()) * pixel_u)
+                          + ((j + offset.y()) * pixel_v);
 
-        auto ray_origin = center;
+        auto ray_origin = camera_center;
         auto ray_direction = pixel_sample - ray_origin;
 
         return ray(ray_origin, ray_direction);
