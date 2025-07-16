@@ -35,34 +35,33 @@ public:
 
 private:
     int image_height;
-    vec3 center;
+    vec3 camera_center;
     vec3 pixel_ul;
     vec3 pixel_u;
     vec3 pixel_v;
 
-    void initialize()
+    void initialize(){
 	
 	image_height = int( image_width / aspect_ratio);
- 
 	image_height = (image_height < 1) ? 1 : image_height;
 	//if imageheight is less than one its one, otherwise keep as is
 	
 	double focal_length = 1.0;
 	double viewport_height = 2.0;
 	double viewport_width = viewport_height * (double(image_width)/image_height);
-	vec3 camera_center = vec3(0,0,0);
+	camera_center = vec3(0,0,0);
 
 	//U, V VECTORS
 	vec3 viewport_u = vec3(viewport_width, 0, 0);
 	vec3 viewport_v = vec3(0, -viewport_height, 0);
 
 	//U, V PIXELS
-	vec3 pixel_u = viewport_u / image_width;
-	vec3 pixel_v = viewport_v / image_height;
+	pixel_u = viewport_u / image_width;
+	pixel_v = viewport_v / image_height;
 
 	//UPPERLEFT PIXEL
 	vec3 viewport_ul = camera_center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
-	vec3 pixel_ul = viewport_ul + 0.5 * (pixel_u + pixel_v);
+	pixel_ul = viewport_ul + 0.5 * (pixel_u + pixel_v);
     }
 
     vec3 ray_color(const ray& r, const hitable &world){
