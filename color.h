@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-void write_color(std::ostream &out, const &vec3 pixel_color){
+void write_color(std::ostream &out, const vec3 &pixel_color){
     double r = pixel_color.x();
     double g = pixel_color.y();
     double b = pixel_color.z();
@@ -14,7 +14,7 @@ void write_color(std::ostream &out, const &vec3 pixel_color){
     int gbyte = int(255.999 * g);
     int bbyte = int(255.999 * b);
 
-    out << rbyte << ' ' << gbyte ' ' << bbyte << '\n';
+    out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
 
