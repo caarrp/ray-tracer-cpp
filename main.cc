@@ -33,13 +33,14 @@ int main() {
     world.add(make_shared<sphere>(vec3(0,0,-1), 0.5));
     world.add(make_shared<sphere>(vec3(0, -100.5, -1), 100));
 
-    camera bob;
+    camera bb;
 
-    bob.aspect_ratio = 16.0/9.0;
-    bob.image_width = 400;
-    bob.samples_per_pixel = 100;//antialiasing
+    bb.aspect_ratio = 16.0/9.0;
+    bb.image_width = 400;
+    bb.samples_per_pixel = 100;//antialiasing
+    bb.max_depth = 50;		//limiting raycolor recursion
 
-    bob.render(world);
+    bb.render(world);
 
 }
 	    
