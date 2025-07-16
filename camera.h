@@ -45,6 +45,18 @@ private:
     double pixel_sample_scale;
 
 
+    vec3 ray_color(const ray& r, const hitable &world){
+	hit_record rec;
+	if (world.hit(r, interval(0, infinity), rec)){
+	    vec3 direction = random_on_hemisphere(rec.normal);
+	    return 0.5 * ray_color(ray(rec.p, direction), world);
+	}
+    
+	vec3 unit_direction = unit(r.direction());
+	double a = 0.5*(unit_direction.y() + 1.0);
+	return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.6, 0.7, 1.0);
+	}
+
     void initialize(){
 	
 	image_height = int( image_width / aspect_ratio);
@@ -88,17 +100,7 @@ private:
         // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
         return vec3(random_double() - 0.5, random_double() - 0.5, 0);
     }
-
-    vec3 ray_color(const ray& r, const hitable &world){
-	hit_record rec;
-	if (world.hit(r, interval(0, infinity), rec)){
-	    return 0.5 * (rec.normal + vec3(1, 1, 1));
-	}
     
-	vec3 unit_direction = unit(r.direction());
-	double a = 0.5*(unit_direction.y() + 1.0);
-	return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.6, 0.7, 1.0);
-    }
 };
 
 #endif

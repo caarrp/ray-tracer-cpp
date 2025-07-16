@@ -23,7 +23,7 @@ public:
 	return min < x && x < max;
     }//if x is not in bounds of interval
 	
-    double clamp(double x){
+    double clamp(double x)const{
 	if (x < min) return min;
 	if (x > max) return max;
 	return x;
