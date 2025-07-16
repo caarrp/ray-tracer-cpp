@@ -39,7 +39,7 @@ bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) cons
 	
 	double temp = (-b - sqrt(b*b - a*c))/a;
 	//temp finds the closer of the hit points (if 2)
-	if (temp < t_max && temp > t_min){
+	if (t_min > temp && temp < t_max){
 	    //if its in range:
 	    rec.t = temp; 
 	    //records the scalar dist. along the ray
@@ -52,7 +52,7 @@ bool sphere::hit(const ray &r, double t_min, double t_max, hit_record &rec) cons
 	    }
 	temp = (-b + sqrt(b*b - a*c))/a;
 	//checking the other hit point just in case
-	if (temp < t_max && temp > t_min){
+	if (t_min < temp && temp < t_max){
 	    rec.t = temp;
 	    rec.p = r.param_pt(rec.t);
 	    rec.normal = (rec.p - center) / radius; 

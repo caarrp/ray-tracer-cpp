@@ -21,12 +21,12 @@ double hit_sphere(const vec3 &center, double radius, const ray &r){
     }
 }
 
-vec3 ray_color(const ray& r){
-    double t = hit_sphere(vec3(0,0,-1), 0.5, r);
-    if (t > 0.0) {
-	vec3 n = unit(r.param_pt(t) - vec3(0, 0, -1));
-	return 0.5*vec3(n.x() + 1, n.y() + 1, n.z() + 1);
+vec3 ray_color(const ray& r, const hitable &world){
+    hit_record rec;
+    if (world.hit(r, 0, infinity, rec)){
+	return 0.5 * (rec.normal + vec3(1, 1, 1));
     }
+    
     vec3 unit_direction = unit(r.direction());
     double a = 0.5*(unit_direction.y() + 1.0);
     return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.7, 0.5, 1.0);
@@ -37,6 +37,12 @@ vec3 ray_color(const ray& r){
 
 int main() {
 
+    //world
+    hitable_list world;
+    world.add(make_shared<sphere>(vec3(0,0,-1), 0.5));
+    world.add(make_shared<sphere>(vec3(0, -100.5, -1), 100));
+
+    //IMAGE
     double aspect_ratio = 16.0/9.0;
     int image_width = 400;
  
@@ -73,7 +79,7 @@ int main() {
 
 	    ray r(camera_center, ray_direction);
 
-	    vec3 pixel_color = ray_color(r);
+	    vec3 pixel_color = ray_color(r, world);
 	    write_color(std::cout, pixel_color);
 	}
     }
