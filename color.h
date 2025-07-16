@@ -11,7 +11,8 @@ inline double linear_to_gamma(double linear_component){
 	double gamma = 2.2;
 	return std::pow(linear_component, 1.0 / gamma);
     }
-
+    return 0;
+}
 
 void write_color(std::ostream &out, const vec3 &pixel_color){
     double r = pixel_color.x();
