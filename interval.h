@@ -22,7 +22,13 @@ public:
     bool surrounds(double x) const{
 	return min < x && x < max;
     }//if x is not in bounds of interval
-
+	
+    double clamp(double x){
+	if (x < min) return min;
+	if (x > max) return max;
+	return x;
+    }//helper for point sampling
+    
     static const interval empty, universe;
 };
 

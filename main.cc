@@ -37,6 +37,7 @@ int main() {
 
     bob.aspect_ratio = 16.0/9.0;
     bob.image_width = 400;
+    bob.samples_per_pixel = 100;//antialiasing
 
     bob.render(world);
 
