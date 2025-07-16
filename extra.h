@@ -7,6 +7,10 @@
 #include <limits>
 #include <memory>
 
+using std::make_shared;
+using std::shared_ptr;
+
+
 const double infinity = std::numeric_limits<double>::infinity();
 
 
@@ -25,6 +29,7 @@ inline double degrees_to_radians(double degrees){
     }
 #include "ray.h"
 #include "vec3.h"
+#include "color.h"
 
 
 #endif

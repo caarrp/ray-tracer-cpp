@@ -1,10 +1,9 @@
 #ifndef HITABLE_H
 #define HITABLE_H
 
-#include "ray.h"
-//include ray bc its needed for hit function
 
-struct hit_record {
+class hit_record {
+public:
     //stores details of ray/obj intersection
     double t;
     //distance along ray where hit occurs
@@ -12,6 +11,14 @@ struct hit_record {
     //position in space where ray hits obj
     vec3 normal;
     //important for shading/lighting calcs
+    bool front_face;
+
+    void set_face_n(const ray &r, const vec3 &out_n){
+	//out_n assumed unit. this sets normal vector
+	front_face = dot(r.direction(), out_n) < 0;
+	normal = front_face ? out_n : -out_n;
+	//the front face is assigned to the outward normal given front_face
+    }
 };
 
 class hitable {
