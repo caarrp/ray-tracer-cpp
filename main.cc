@@ -33,16 +33,15 @@ int main() {
     hitable_list world;
     
     
-    auto m_g = make_shared<lambertian>(vec3(0.8, 0.8, 0.0));
-    auto m_c = make_shared<lambertian>(vec3(0.1, 0.2, 0.5));
-    auto m_l = make_shared<metal>(vec3(0.8, 0.8, 0.8));
-    auto m_r = make_shared<metal>(vec3(0.8, 0.6, 0.2));
+    auto m_g = make_shared<lambertian>(vec3(0.9, 0.1, 0.0));
+    auto m_c = make_shared<lambertian>(vec3(0.1, 0.3, 0.5));
+    auto m_l = make_shared<dielectric>(1.5);
+    auto m_r = make_shared<metal>(vec3(0.2, 0.6, 0.8), 1.0);
 
-    world.add(make_shared<sphere>(vec3( 0.0, -100.5, -1.0), 100.0, m_g));
-    world.add(make_shared<sphere>(vec3( 0.0, 0.0, -1.2), 0.5, m_c));
+    world.add(make_shared<sphere>(vec3(0.0, -100.5, -1.0), 100.0, m_g));
+    world.add(make_shared<sphere>(vec3(0.0, 0.0, -1.2), 0.5, m_c));
     world.add(make_shared<sphere>(vec3(-1.0, 0.0, -1.0), 0.5, m_l));
-    world.add(make_shared<sphere>(vec3( 1.0, 0.0, -1.0), 0.5, m_r));
-
+    world.add(make_shared<sphere>(vec3(1.0, 0.0, -1.0), 0.5, m_r));
 
 
     camera bb;

@@ -67,7 +67,7 @@ public:
 
     dielectric(double ref_idx) : refractive_index(ref_idx) {}
 
-    bool scatter(const ray &r,
+    bool scatter(const ray &r_in,
 	    const hit_record &rec, vec3 &attentuation, ray &scatter)
 	const override{
 	    attentuation = vec3(1.0, 1.0, 1.0);

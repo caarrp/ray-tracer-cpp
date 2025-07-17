@@ -65,7 +65,7 @@ private:
     
 	vec3 unit_direction = unit(r.direction());
 	double a = 0.5*(unit_direction.y() + 1.0);
-	return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.6, 0.7, 1.0);
+	return (1.0-a)*vec3(1.0,1.0,1.0) + a*vec3(0.8, 0.7, 0.3);
 	}
 
     void initialize(){
