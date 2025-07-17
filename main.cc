@@ -35,8 +35,8 @@ int main() {
     
     auto m_g = make_shared<lambertian>(vec3(0.9, 0.1, 0.0));
     auto m_c = make_shared<lambertian>(vec3(0.1, 0.3, 0.5));
-    auto m_l = make_shared<dielectric>(1.5);
-    auto m_r = make_shared<metal>(vec3(0.2, 0.6, 0.8), 1.0);
+    auto m_l = make_shared<dielectric>(1.000/1.333);
+    auto m_r = make_shared<metal>(vec3(0.0, 0.8, 0.8), 0.2);
 
     world.add(make_shared<sphere>(vec3(0.0, -100.5, -1.0), 100.0, m_g));
     world.add(make_shared<sphere>(vec3(0.0, 0.0, -1.2), 0.5, m_c));

@@ -74,11 +74,24 @@ public:
 	    double ri = rec.front_face ? (1.0/refractive_index) : refractive_index;
 
 	    vec3 unit_direction = unit(r_in.direction());
-	    vec3 refracted = refract(unit_direction, rec.normal, ri);
+	
+	    double cos_theta = std::fmin(dot(-unit_direction, rec.normal), 1.0);
+	    double sin_theta = std::sqrt(1.0 - cos_theta*cos_theta);
 
-	    scatter = ray(rec.p, refracted);
+	    bool cant_refract = ri*sin_theta > 1.0;
+	    vec3 direction;
+
+	    if (cant_refract){
+		direction = reflect(unit_direction, rec.normal);
+	    }
+	    else{
+		direction = refract(unit_direction, rec.normal, ri);
+	    }
+
+	    scatter = ray(rec.p, direction);
 	    return true;
 	}
 };
 
 #endif
+
