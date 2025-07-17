@@ -7,6 +7,14 @@
 
 
 class camera {
+
+    int image_height;
+    vec3 camera_center;
+    vec3 pixel_ul;
+    vec3 pixel_u;
+    vec3 pixel_v;
+    double pixel_sample_scale;
+
 public:
     //IMAGE
     double aspect_ratio = 16.0/9.0;
@@ -37,13 +45,6 @@ public:
  
 
 private:
-    int image_height;
-    vec3 camera_center;
-    vec3 pixel_ul;
-    vec3 pixel_u;
-    vec3 pixel_v;
-    double pixel_sample_scale;
-
 
     vec3 ray_color(const ray& r, int depth, const hitable &world){
 	if (depth <= 0){
@@ -51,8 +52,14 @@ private:
 	}
 	hit_record rec;
 	if (world.hit(r, interval(0.001, infinity), rec)){
-	    vec3 direction = random_on_hemisphere(rec.normal);
-	    return 0.5 * ray_color(ray(rec.p, direction), depth -1, world);
+
+	    ray scatter;
+	    color attenuation;
+	    
+	    if (rec.mat->scatter(r, rec, attenuation, scatter){
+		return attenuation * ray_color(scatter, depth -1, world);
+		}
+	    return vec3(0, 0, 0);
 	}
     
 	vec3 unit_direction = unit(r.direction());
