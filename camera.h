@@ -24,7 +24,7 @@ public:
     int samples_per_pixel = 10;
     int max_depth = 10; //num ray bounces into scene
     
-    double view_angle = 90; //field of view, vert view angle
+    double field_of_view = 90; //field of view, vert view angle
     vec3 origin_pt = vec3(0,0,0);//pt camera is centerd at
     vec3 focus_pt = vec3(0,0,-1);//pt camera is pointing to
     vec3 v_up = vec3(0,1,0);//relative up direction
@@ -86,7 +86,7 @@ private:
 
 	//determining viewport dimensions
 	double focal_length = (origin_pt - focus_pt).length();
-	double theta = degrees_to_radians(view_angle);
+	double theta = degrees_to_radians(field_of_view);
 	double h = std::tan(theta/2);
 	double viewport_height = 2*h*focal_length;
 	double viewport_width = viewport_height * (double(image_width)/image_height);
@@ -98,7 +98,7 @@ private:
 
 	//U, V VECTORS
 	vec3 viewport_u = viewport_width * u;
-	vec3 viewport_v = -viewport_height * v;
+	vec3 viewport_v = viewport_height * -v;
 
 	//U, V PIXELS
 	pixel_u = viewport_u / image_width;
