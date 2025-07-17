@@ -81,7 +81,7 @@ public:
 	    bool cant_refract = ri*sin_theta > 1.0;
 	    vec3 direction;
 
-	    if (cant_refract){
+	    if (cant_refract || reflectance(cos_theta, ri) > random_double()){
 		direction = reflect(unit_direction, rec.normal);
 	    }
 	    else{
@@ -91,6 +91,13 @@ public:
 	    scatter = ray(rec.p, direction);
 	    return true;
 	}
+private:
+    static double reflectance(double cosine, double refractive_index){
+	//using schlicks aproximation for reflectance
+	double r_0 = (1 - refractive_index) / (1 + refractive_index);
+	r_0 = r_0 * r_0;
+	return r_0 + (1 - r_0)*std::pow((1-cosine), 5);
+    }
 };
 
 #endif
