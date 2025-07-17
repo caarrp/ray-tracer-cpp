@@ -5,19 +5,21 @@
 #include "hitable.h"
 
 class sphere: public hitable {
-//sphere inherits from hitable
-    public:
-	sphere() {}
+//sphere inherits from hittable:
+    vec3 center;
+    double radius;
+    shared_ptr<material> mat;
+
+public:
+    sphere() {}
 	//default constructor defined
-	sphere(vec3 c, double r) : center(c), radius(r) {};
+    sphere(vec3 c, double r, std::shared_ptr<material> m) : 
+	center(c), radius(std::fmax(0, r)), mat(m) {}
 	//parameterized constructor inits center and radius
 	
 	virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const;
 	//declaring virtual function hit
 	
-	vec3 center;
-	double radius;
-	//notice these are still public
 };
 //ends class declaration
 
@@ -46,6 +48,7 @@ bool sphere::hit(const ray &r, interval ray_t, hit_record &rec) const{
         rec.p = r.param_pt(rec.t);
 	vec3 outward_normal = (rec.p - center) / radius;
         rec.set_face_n(r, outward_normal);
+	rec.mat = mat;	
 
         return true;
 }

@@ -2,6 +2,8 @@
 #define HITABLE_H
 
 
+class material;//fwd declaration
+
 class hit_record {
 public:
     //stores details of ray/obj intersection
@@ -10,6 +12,7 @@ public:
     vec3 p;
     //position in space where ray hits obj
     vec3 normal;
+    shared_ptr<material> mat;
     //important for shading/lighting calcs
     bool front_face;
 

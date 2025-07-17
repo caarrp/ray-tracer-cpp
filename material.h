@@ -8,11 +8,12 @@ public:
     virtual ~material() = default;
 
     virtual bool scatter(
-	    const ray &r_in, const hit_record &rec, color &attenuation, ray &scatter) const {
+	    const ray &r_in, const hit_record &rec, vec3 &attenuation, ray &scatter) const {
 	return false;
     }
+};
 
-class labertian : public material{
+class lambertian : public material{
 
     vec3 albedo;//for material color
 public:
@@ -20,7 +21,7 @@ public:
     //parameterized constructor
 
     bool scatter(const ray &r_min,
-	    const hit_record &rec; vec3 &attenuation, ray &scatter)
+	    const hit_record &rec, vec3 &attenuation, ray &scatter)
 	const override{
 	    vec3 scatter_direction = rec.normal + random_unit();
 	    
@@ -36,17 +37,17 @@ public:
 class metal : public material {
     vec3 albedo;
 public:
-    metal(const color &albedo) : albedo(albedo) {}
+    metal(const vec3 &albedo) : albedo(albedo) {}
     //parameterized constructor
 
     bool scatter(const ray &r_in, 
 	    const hit_record &rec, vec3 &attenuation, ray &scatter)
 	const override{
 
-	    vec3 reflected = reflect(r_in.direction(), rec.normal());
+	    vec3 reflected = reflect(r_in.direction(), rec.normal);
 	    scatter = ray(rec.p, reflected);
 	    attenuation = albedo;
-	    return true
+	    return true;
 	}
 };
 

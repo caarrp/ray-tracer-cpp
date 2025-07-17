@@ -1,5 +1,6 @@
 #include "extra.h"
 
+#include "material.h"
 #include "camera.h"
 #include "hitable.h"
 #include "hitable_list.h"
@@ -30,8 +31,19 @@ int main() {
 
     //world
     hitable_list world;
-    world.add(make_shared<sphere>(vec3(0,0,-1), 0.5));
-    world.add(make_shared<sphere>(vec3(0, -100.5, -1), 100));
+    
+    
+    auto m_g = make_shared<lambertian>(vec3(0.8, 0.8, 0.0));
+    auto m_c = make_shared<lambertian>(vec3(0.1, 0.2, 0.5));
+    auto m_l = make_shared<metal>(vec3(0.8, 0.8, 0.8));
+    auto m_r = make_shared<metal>(vec3(0.8, 0.6, 0.2));
+
+    world.add(make_shared<sphere>(vec3( 0.0, -100.5, -1.0), 100.0, m_g));
+    world.add(make_shared<sphere>(vec3( 0.0, 0.0, -1.2), 0.5, m_c));
+    world.add(make_shared<sphere>(vec3(-1.0, 0.0, -1.0), 0.5, m_l));
+    world.add(make_shared<sphere>(vec3( 1.0, 0.0, -1.0), 0.5, m_r));
+
+
 
     camera bb;
 

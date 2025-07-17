@@ -4,6 +4,7 @@
 
 
 #include "hitable.h"
+#include "material.h"
 
 
 class camera {
@@ -54,9 +55,9 @@ private:
 	if (world.hit(r, interval(0.001, infinity), rec)){
 
 	    ray scatter;
-	    color attenuation;
+	    vec3 attenuation;
 	    
-	    if (rec.mat->scatter(r, rec, attenuation, scatter){
+	    if (rec.mat->scatter(r, rec, attenuation, scatter)){
 		return attenuation * ray_color(scatter, depth -1, world);
 		}
 	    return vec3(0, 0, 0);
