@@ -13,6 +13,8 @@ public:
     }
 };
 
+
+
 class lambertian : public material{
 
     vec3 albedo;//for material color
@@ -34,10 +36,14 @@ public:
 	}
 };
 
+
+
 class metal : public material {
     vec3 albedo;
+    double fuzz;
 public:
-    metal(const vec3 &albedo) : albedo(albedo) {}
+    metal(const vec3 &albedo, double fuzz) : 
+	albedo(albedo), fuzz(fuzz) {}
     //parameterized constructor
 
     bool scatter(const ray &r_in, 
@@ -45,8 +51,32 @@ public:
 	const override{
 
 	    vec3 reflected = reflect(r_in.direction(), rec.normal);
+	    reflected = unit(reflected) + (fuzz*random_unit());
 	    scatter = ray(rec.p, reflected);
 	    attenuation = albedo;
+	    return (dot(scatter.direction(), rec.normal) > 0);
+	}
+};
+
+
+
+class dielectric : public material {
+
+    double refractive_index;
+public:
+
+    dielectric(double ref_idx) : refractive_index(ref_idx) {}
+
+    bool scatter(const ray &r,
+	    const hit_record &rec, vec3 &attentuation, ray &scatter)
+	const override{
+	    attentuation = vec3(1.0, 1.0, 1.0);
+	    double ri = rec.front_face ? (1.0/refractive_index) : refractive_index;
+
+	    vec3 unit_direction = unit(r_in.direction());
+	    vec3 refracted = refract(unit_direction, rec.normal, ri);
+
+	    scatter = ray(rec.p, refracted);
 	    return true;
 	}
 };
