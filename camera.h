@@ -15,6 +15,7 @@ class camera {
     vec3 pixel_u;
     vec3 pixel_v;
     double pixel_sample_scale;
+    vec3 u, v, w;
 
 public:
     //IMAGE
@@ -22,7 +23,12 @@ public:
     int image_width = 400;
     int samples_per_pixel = 10;
     int max_depth = 10; //num ray bounces into scene
-  
+    
+    double view_angle = 90; //field of view, vert view angle
+    vec3 origin_pt = vec3(0,0,0);//pt camera is centerd at
+    vec3 focus_pt = vec3(0,0,-1);//pt camera is pointing to
+    vec3 v_up = vec3(0,1,0);//relative up direction
+
     void render(const hitable &world){
 	initialize();	
 
@@ -73,24 +79,33 @@ private:
 	image_height = int( image_width / aspect_ratio);
 	image_height = (image_height < 1) ? 1 : image_height;
 	//if imageheight is less than one its one, otherwise keep as is
+	
+	camera_center = origin_pt;
 
 	pixel_sample_scale = 1.0/samples_per_pixel;
 
-	double focal_length = 1.0;
-	double viewport_height = 2.0;
+	//determining viewport dimensions
+	double focal_length = (origin_pt - focus_pt).length();
+	double theta = degrees_to_radians(view_angle);
+	double h = std::tan(theta/2);
+	double viewport_height = 2*h*focal_length;
 	double viewport_width = viewport_height * (double(image_width)/image_height);
-	camera_center = vec3(0,0,0);
+
+	//calculate v across horisontal and vertical
+	w = unit(origin_pt - focus_pt);
+	u = unit(cross(v_up, w));
+	v = cross(w, u);
 
 	//U, V VECTORS
-	vec3 viewport_u = vec3(viewport_width, 0, 0);
-	vec3 viewport_v = vec3(0, -viewport_height, 0);
+	vec3 viewport_u = viewport_width * u;
+	vec3 viewport_v = -viewport_height * v;
 
 	//U, V PIXELS
 	pixel_u = viewport_u / image_width;
 	pixel_v = viewport_v / image_height;
 
 	//UPPERLEFT PIXEL
-	vec3 viewport_ul = camera_center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
+	vec3 viewport_ul = camera_center - (focal_length*w) - viewport_u/2 - viewport_v/2;
 	pixel_ul = viewport_ul + 0.5 * (pixel_u + pixel_v);
     }
 

@@ -52,6 +52,11 @@ int main() {
     bb.image_width = 400;
     bb.samples_per_pixel = 100;//antialiasing
     bb.max_depth = 50;		//limiting raycolor recursion
+	
+    bb.view_angle = 90;
+    bb.origin_pt = vec3(-2, 2, 1);
+    bb.focus_pt = vec3(0, 0, -1);
+    bb.v_up = vec3(0, 1, 0);
 
     bb.render(world);
 
