@@ -13,7 +13,7 @@ class camera {
 
 public:
     //IMAGE
-    double aspect_ratio = 16.0/9.0;
+    double aspect_ratio = 16.0/16.0;
     int image_width = 400;
     int samples_per_pixel = 10;
     int max_depth = 10; //num ray bounces into scene
@@ -79,10 +79,10 @@ private:
 
     void initialize(){
 	
-	image_height = int(image_width / int(aspect_ratio));
+	image_height = int(image_width / (aspect_ratio));
 	image_height = (image_height < 1) ? 1 : image_height;
 	//if imageheight is less than one its one, otherwise keep as is
-	aspect_ratio = double(image_width) / double(image_height); 
+	//aspect_ratio = double(image_width) / double(image_height); 
 
 	camera_center = origin_pt;
 

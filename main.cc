@@ -54,9 +54,9 @@ int main() {
     bb.max_depth = 50;		//limiting raycolor recursion
 	
     bb.field_of_view = 90;
-    bb.origin_pt = vec3(0, 0, 1);
+    bb.origin_pt = vec3(3, 2, 0);
     bb.focus_pt = vec3(0, 0, -1);
-    bb.v_up = vec3(0, 1, 0);
+    //bb.v_up = vec3(0, 1, 0);
 
     //bb.defocus_angle = 10.0;
     //bb.focus_dist = 3.4;

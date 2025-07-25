@@ -26,6 +26,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+#writing ppm to test file
+run: bin/test
+	./bin/test > test.ppm
+	display test.ppm
+
 
 #clean the things
 clean:
