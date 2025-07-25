@@ -13,7 +13,7 @@ class camera {
 
 public:
     //IMAGE
-    double aspect_ratio = 16.0/16.0;
+    double aspect_ratio = 16.0/9.0;
     int image_width = 400;
     int samples_per_pixel = 10;
     int max_depth = 10; //num ray bounces into scene
@@ -94,11 +94,20 @@ private:
 	double h = std::tan(theta/2);
 	double viewport_height = 2*h*focal_length;
 	double viewport_width = viewport_height * aspect_ratio;
+	#if DEBUG
+	std::cerr << viewport_height << " x " << viewport_width << std::endl;
+	#endif
 
 	//calculate v across horisontal and vertical
 	w = unit(origin_pt - focus_pt);
 	u = unit(cross(v_up, w));
 	v = cross(w, u);
+#if DEBUG
+	w.print();
+	u.print();
+	v.print();
+#endif
+
 
 	//U, V VECTORS
 	vec3 viewport_u = viewport_width * u;

@@ -1,6 +1,12 @@
 #compiler and flags
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -O2
+CXXFLAGS := -std=c++17 -Wall -Wextra -O2 
+
+DEBUG ?= false
+
+ifeq ($(DEBUG), true)
+    CXXFLAGS := -std=c++17 -Wall -Wextra -g -O0 -DDEBUG
+endif
 
 #directories which i dont think I have any rn?
 SRC_DIR := .
