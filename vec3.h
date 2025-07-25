@@ -22,6 +22,10 @@ public:
     
     double z() const { return e[2]; }
 
+    void print(std::ostream &os = std::cerr) const{
+	os << "< " << e[0] << ", " << e[1] << ", " << e[2] << ">" << std::endl;}
+
+
     //const vec& operator+() const { return *this; } 
     vec3 operator-() const { 
 	return vec3(-e[0], -e[1], -e[2]); 
@@ -111,7 +115,7 @@ inline double dot(const vec3 &u, const vec3 &v){
 
 inline vec3 cross(const vec3 &u, const vec3 &v){
     return vec3(u.e[1]*v.e[2] - u.e[2]*v.e[1],
-	        u.e[0]*v.e[2] - u.e[0]*v.e[2],
+	        -(u.e[0]*v.e[2] - u.e[2]*v.e[0]),
 		u.e[0]*v.e[1] - u.e[1]*v.e[0]);
 }
 
