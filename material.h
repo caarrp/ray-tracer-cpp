@@ -22,7 +22,7 @@ public:
     lambertian(const vec3 albedo) : albedo(albedo) {}
     //parameterized constructor
 
-    bool scatter(const ray &r_min,
+    bool scatter(const ray &r_in,
 	    const hit_record &rec, vec3 &attenuation, ray &scatter)
 	const override{
 	    vec3 scatter_direction = rec.normal + random_unit();
