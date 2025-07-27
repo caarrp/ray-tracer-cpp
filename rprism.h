@@ -28,11 +28,13 @@ rprism :: rprism(vec3 o, double l, double w, double h, std::shared_ptr<material>
     height = vec3(o[0], o[1] + h, o[2]);
     width = vec3(o[0], o[1], o[2] + w); //essentially depth
     length = vec3(o[0] + l, o[1], o[2]);
+    mat = m;
     }
 
 
 rprism :: virtual bool hit(const ray &r, interval ray_t, hit_record &rec) 
     const {
+    // when you hit a re
 
     }
 

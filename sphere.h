@@ -17,7 +17,7 @@ public:
 	center(c), radius(std::fmax(0, r)), mat(m) {}
 	//parameterized constructor inits center and radius
 	
-	virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const;
+    virtual bool hit(const ray &r, interval ray_t, hit_record &rec) const;
 	//declaring virtual function hit
 	
 };
