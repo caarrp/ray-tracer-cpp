@@ -17,6 +17,7 @@ public:
     int image_width = 400;
     int samples_per_pixel = 10;
     int max_depth = 10; //num ray bounces into scene
+    vec3 background;
     
     double field_of_view = 90; //field of view, vert view angle
     vec3 origin_pt = vec3(0,0,0);//pt camera is centerd at
@@ -82,10 +83,22 @@ private:
 		}
 	    return vec3(0, 0, 0);
 	}
-    
+
+	if (!world.hit(r, interval(0.001, infinity), rec)){
 	vec3 unit_direction = unit(r.direction());
 	double a = 0.5*(unit_direction.y() + 1.0);
 	return (1.0-a)*vec3(0.5,0.5,0.5) + a*vec3(0.0, 0.0, 0.5);
+	}//technically this is my background atm
+
+	ray scattered;
+	vec3 attenuation;
+	vec3 color_from_emission = rec.mat->emitted(rec.u, rec.v, rec.p);
+
+	if (!rec.mat->scatter(r, rec, attenuation, scattered))
+	    return color_from_emission;
+
+	vec3 color_from_scatter = attenuation * ray_color(scattered, depth - 1, world);
+	return color_from_emission + color_from_scatter;
 	}
 
 

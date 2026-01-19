@@ -2,10 +2,16 @@
 #define MATERIAL_H
 
 #include "hitable.h"
+#include "texture.h"
+
 
 class material {
 public:
     virtual ~material() = default;
+
+    virtual vec3 emitted(double u, double v, const vec3& p) const {
+        return vec3(0,0,0);
+    }
 
     virtual bool scatter(
 	    const ray &r_in, const hit_record &rec, vec3 &attenuation, ray &scatter) const {
@@ -98,6 +104,22 @@ private:
 	r_0 = r_0 * r_0;
 	return r_0 + (1 - r_0)*std::pow((1-cosine), 5);
     }
+};
+
+
+class diffuse_light : public material {
+
+    shared_ptr<texture> tex;
+
+public:
+    diffuse_light(shared_ptr<texture> tex) : tex(tex) {}
+
+    diffuse_light(const vec3& emit) : tex(make_shared<solid_color>(emit)) {}
+
+    vec3 emitted(double u, double v, const vec3& p) const override {
+        return tex->value(u, v, p);
+    }
+
 };
 
 #endif

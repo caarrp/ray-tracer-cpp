@@ -14,6 +14,8 @@ public:
     vec3 normal;
     shared_ptr<material> mat;
     //important for shading/lighting calcs
+    double u;
+    double v;
     bool front_face;
 
     void set_face_n(const ray &r, const vec3 &out_n){

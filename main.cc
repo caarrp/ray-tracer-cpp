@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "hitable.h"
 #include "hitable_list.h"
+#include "texture.h"
 #include "sphere.h"
 
 
@@ -33,7 +34,9 @@ int main() {
     //world
     hitable_list world;
     
-    
+    auto difflight = make_shared<diffuse_light>(vec3(4,4,4));
+    world.add(make_shared<sphere>(vec3(3,1,-2), 0.25, difflight)); //light! 
+
     auto m_g = make_shared<lambertian>(vec3(0.4, 0.4, 0.4));
     auto m_c = make_shared<lambertian>(vec3(0.1, 0.3, 0.5));
     auto m_inner = make_shared<dielectric>(1.000/1.500);
