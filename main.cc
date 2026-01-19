@@ -29,13 +29,15 @@ double hit_rprism(){}
 
 
 
+
 int main() {
 
     //world
     hitable_list world;
     
-    auto difflight = make_shared<diffuse_light>(vec3(4,4,4));
-    world.add(make_shared<sphere>(vec3(3,1,-2), 0.25, difflight)); //light! 
+    auto orangelight = make_shared<diffuse_light>(vec3(255.0, 140.0, 10.0));
+    auto difflight = make_shared<diffuse_light>(vec3(0.0, 40.0, 100.0));
+    //std::cerr<< "made difflight " << std::endl;
 
     auto m_g = make_shared<lambertian>(vec3(0.4, 0.4, 0.4));
     auto m_c = make_shared<lambertian>(vec3(0.1, 0.3, 0.5));
@@ -52,12 +54,14 @@ int main() {
     world.add(make_shared<sphere>(vec3(1.0, 0.0, 0.0), 0.5, m_r));
     world.add(make_shared<sphere>(vec3(2.0,-0.5, 3.0), 0.9, m_a));
     world.add(make_shared<sphere>(vec3(-2.0, 0.35, 2.0),1.0, m_b));
+    world.add(make_shared<sphere>(vec3(1.0,1.0,-2.0), 0.25, difflight)); //light! 
+    world.add(make_shared<sphere>(vec3(-1.0,2.0, 2.0), 0.5, orangelight)); //light! 
 
     camera nikon;
 
     nikon.aspect_ratio = 16.0/9.0;
     nikon.image_width = 1000;
-    nikon.samples_per_pixel = 60;//antialiasing
+    nikon.samples_per_pixel = 10000;//antialiasing
     nikon.max_depth = 100;		//limiting raycolor recursion
 	
     nikon.field_of_view = 80;
@@ -69,7 +73,6 @@ int main() {
     nikon.focus_dist = 6;
 
     nikon.render(world);
-
 }
 	    
 

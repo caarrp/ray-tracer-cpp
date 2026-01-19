@@ -67,40 +67,30 @@ private:
     vec3 defocus_disk_u;
     vec3 defocus_disk_v;
     
-
     vec3 ray_color(const ray& r, int depth, const hitable &world){
+	//std::cerr << "=== camera::ray_color() CALLED ===" << std::endl;  // ADD THIS
 	if (depth <= 0){
 	    return vec3(0,0,0);
 	}
 	hit_record rec;
-	if (world.hit(r, interval(0.001, infinity), rec)){
-
-	    ray scatter;
-	    vec3 attenuation;
-	    
-	    if (rec.mat->scatter(r, rec, attenuation, scatter)){
-		return attenuation * ray_color(scatter, depth -1, world);
-		}
-	    return vec3(0, 0, 0);
-	}
 
 	if (!world.hit(r, interval(0.001, infinity), rec)){
-	vec3 unit_direction = unit(r.direction());
-	double a = 0.5*(unit_direction.y() + 1.0);
-	return (1.0-a)*vec3(0.5,0.5,0.5) + a*vec3(0.0, 0.0, 0.5);
+	    vec3 unit_direction = unit(r.direction());
+	    double a = 0.5*(unit_direction.y() + 1.0);
+	    return (1.0-a)*vec3(0.5,0.5,0.5) + a*vec3(0.0, 0.0, 0.5);
 	}//technically this is my background atm
 
 	ray scattered;
 	vec3 attenuation;
-	vec3 color_from_emission = rec.mat->emitted(rec.u, rec.v, rec.p);
+	vec3 color_from_emission = rec.mat->emitted(rec.p);
 
-	if (!rec.mat->scatter(r, rec, attenuation, scattered))
-	    return color_from_emission;
+	if (!rec.mat->scatter(r, rec, attenuation, scattered)){
+	    //std::cerr<<"you hit sth not scatterable"<<std::endl;
+	    return color_from_emission;}
 
 	vec3 color_from_scatter = attenuation * ray_color(scattered, depth - 1, world);
 	return color_from_emission + color_from_scatter;
-	}
-
+    }
 
     void init_perspective(){
 	
